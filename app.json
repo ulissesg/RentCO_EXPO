@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "rentCO_Mobile",
+    "slug": "rentCO_Mobile",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "rentCO_Mobile"
+}
