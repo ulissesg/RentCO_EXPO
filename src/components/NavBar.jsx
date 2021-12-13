@@ -13,6 +13,12 @@ export default function NavBar () {
 
     return (
         <View style={styles.NavBar}>
+
+            <Pressable onPress={() => navigation.navigate('Rents')} style={styles.IconBehave} 
+            android_ripple={{borderless:true, radius: 50}}>
+                <FontAwesome name="book" size={24} color="black" />
+            </Pressable>
+
             <Pressable onPress={() => navigation.navigate('Clients')} style={styles.IconBehave} 
             android_ripple={{borderless:true, radius: 50}}>
                 <Ionicons name="person-circle" size={26} color="black" />
@@ -21,11 +27,6 @@ export default function NavBar () {
             <Pressable onPress={() => navigation.navigate('Products')} style={styles.IconBehave} 
             android_ripple={{borderless:true, radius: 50}}>
                 <MaterialIcons name="home-repair-service" size={24} color="black" />
-            </Pressable>
-
-            <Pressable onPress={() => navigation.navigate('Rents')} style={styles.IconBehave} 
-            android_ripple={{borderless:true, radius: 50}}>
-                <FontAwesome name="book" size={24} color="black" />
             </Pressable>
         </View>  
     )

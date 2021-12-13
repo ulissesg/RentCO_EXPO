@@ -57,7 +57,17 @@ export default function Products () {
 
                 {products.map(product => 
                     <View key={product._id} style={styles.products}>
-                        <Pressable onPress={() => navigation.navigate('Info')} style={styles.description}>
+                        <Pressable onPress={() => 
+                                                { Alert.alert('Produto', 
+                                                    'ID: ' + product._id + 
+                                                    '\nCodigo: ' + product.code + 
+                                                    '\nDescrição: ' + product.description +
+                                                    '\nTipo: ' + product.type + 
+                                                    '\nPreço: ' + product.price ,
+                                                    
+                                                    [{ text: 'OK' }])
+                                                }} 
+                                    style={styles.description}>
                             <Text style={styles.text}>{ product.code } - { product.description }</Text>
                         </Pressable>
                         

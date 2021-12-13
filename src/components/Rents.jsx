@@ -7,6 +7,7 @@ import { AntDesign } from '@expo/vector-icons';
 export default function Rents () {
 
     const navigation = useNavigation();
+    const [name, setName] = useState();
     const [refreshing, setRefreshing] = useState(false);
     const [rents, setRents] = useState([]);
 
@@ -24,13 +25,22 @@ export default function Rents () {
                 .catch((err) => console.log('the following error ocurred while deleting the rent: ' + err.message))
             }},
           ]);
-        
     }
 
+    function getClientName(id){
+        if (id != null){
+            api.get('/client/' + id)
+            .then((response) => {
+                console.log(response.data.client.name)
+            })
+            .catch((err) => console.log('the following error ocurred while getting the name: ' + err))
+        }
+    }
+    
     function getListRent(){
         api.get('/rent/list')
         .then((response) => {
-            setRents(response.data.rents)
+            setRents(response.data.rents)                
         })
         .catch((err) => console.log('the following error ocurred while listing the rents: ' + err))
     }
@@ -57,8 +67,19 @@ export default function Rents () {
 
                 {rents.map(rent => 
                     <View key={rent._id} style={styles.rents}>
-                        <Pressable onPress={() => navigation.navigate('Info')} style={styles.description}>
-                            <Text style={styles.text}>{ rent._id }</Text>
+                        <Pressable onPress={() => 
+                                                { Alert.alert('Locação', 
+                                                    'ID: ' + rent._id + 
+                                                    '\nId do cliente: ' + rent.clientId + 
+                                                    '\nId do produto: ' + rent.productId +
+                                                    '\nData de entrega: ' + rent.deliveryDate.split("T")[0] + 
+                                                    '\nData de retirada: ' + rent.pickUpDate.split("T")[0] +
+                                                    '\nPreço: ' + rent.price ,
+                                                    
+                                                    [{ text: 'OK' }])
+                                                }}
+                                    style={styles.description}>
+                            <Text style={styles.text}> {rent.clientId} </Text>
                         </Pressable>
                         
                         <View style={styles.rentFunction}>

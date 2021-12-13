@@ -57,7 +57,19 @@ export default function Clients () {
 
                 {clients.map(client => 
                     <View key={client._id} style={styles.clients}>
-                        <Pressable onPress={() => navigation.navigate('Info')}  style={styles.names}>
+                        <Pressable onPress={() => 
+                                                { Alert.alert('Cliente', 
+                                                    'ID: ' + client._id + 
+                                                    '\nNome: ' + client.name +
+                                                    '\nTelefone: ' + client.telephone + 
+                                                    '\nEndereço: ' + client.address + 
+                                                    '\nTipo: ' + client.clientType +
+                                                    '\nSaldo: ' + client.balance,
+                                                    
+                                                    [{ text: 'OK' }])
+                                                }
+                                            }  
+                                    style={styles.names}>
                             <Text style={styles.text}>{ client.name }</Text>
                         </Pressable>
                         

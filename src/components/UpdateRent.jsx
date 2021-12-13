@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { ScrollView, TextInput, Text, Pressable, Alert } from 'react-native';
 import api from '../../services/api';
+import { useRoute } from "@react-navigation/native";
 import { Picker } from '@react-native-picker/picker';
 import DatePicker from '@react-native-community/datetimepicker';
 
-export default function CreateProduct() {
+export default function UpdateProduct() {
+
+    const route = useRoute();
 
     const [clients, setClients] = useState([]);
     const [products, setProducts] = useState([]);
@@ -14,11 +17,10 @@ export default function CreateProduct() {
     const [productId, setProductId] = useState("");
     const [deliveryDate, setDeliveryDate] = useState("");
     const [pickUpDate, setPickUpDate] = useState("");
+    const [rent, setRent] = useState();
     const [price, setPrice] = useState("0");
 
     useEffect(() => {
-        console.log("use product")
-
         if(productId !== ""){
             api.get('/product/' + productId)
             .then((response) => setProductValue(response.data.product.price))
@@ -28,8 +30,6 @@ export default function CreateProduct() {
     }, [productId])
 
     useEffect(() => {
-        console.log("use client")
-
         if(clientId !== ""){
             api.get('/client/' + clientId)
                 .then((response) => setClient(response.data.client))
@@ -37,25 +37,37 @@ export default function CreateProduct() {
         }
     }, [clientId])
 
+    useEffect(() => {
+        api.get('/rent/' + route.params.id)
+        .then((response) => {
+            setRent(response.data.rent)
+            setClientId(response.data.rent.clientId)
+            setProductId(response.data.rent.productId)
+            setDeliveryDate(response.data.rent.deliveryDate.split('T')[0])
+            setPickUpDate(response.data.rent.pickUpDate.split('T')[0])
+            setPrice(response.data.rent.price)
+        })
+        .catch((err) => console.log('the following error ocurred while listing the clients: ' + err.message))
+    }, [])
+
         
     useEffect(() => {
-        console.log("use clients")
         api.get('/client/list')
         .then((response) => setClients(response.data.clients))
         .catch((err) => console.log('the following error ocurred while listing the clients: ' + err.message))
     }, [])
         
     useEffect(() => {
-        console.log("use products")
         api.get('/product/list')
         .then((response) => setProducts(response.data.products))
         .catch((err) => console.log('the following error ocurred while listing the products: ' + err.message))
     }, [])
 
-    function createRent(){
+    function updateRent(){
         const price = (productValue - ((productValue * client.clientType) / 100));
+        client.balance = client.balance + (price - rent.price)
         if(clientId !== "" && productId !== "" && deliveryDate !== "" && pickUpDate !== "" ){
-            api.post('/rent/create',{
+            api.post('/rent/update/' + rent._id,{
                 "clientId": clientId,
                 "productId": productId,
                 "deliveryDate": deliveryDate,
@@ -68,10 +80,10 @@ export default function CreateProduct() {
                     "telephone": client.telephone,
                     "address": client.address,
                     "clientType": client.clientType,
-                    "balance": (client.balance + price)
+                    "balance": client.balance
                 }).then((response) => {
-                    Alert.alert('Sucesso', 'Locação criada com sucesso, ' +
-                                price + ' foi adiconado ao client ' +
+                    Alert.alert('Sucesso', 'Locação editada com sucesso, ' +
+                                (price - rent.price) +  ' foi adiconado ao cliente ' +
                                 client.name, [{ text: 'OK' }]);
                 })
             })
@@ -118,8 +130,8 @@ export default function CreateProduct() {
                 value={pickUpDate} 
             />            
 
-            <Pressable style={styles.button} onPress={() => createRent()}>
-                <Text style={{color: 'white'}}>Adicionar</Text>
+            <Pressable style={styles.button} onPress={() => updateRent()}>
+                <Text style={{color: 'white'}}>Editar</Text>
             </Pressable>
         </ScrollView>
     )

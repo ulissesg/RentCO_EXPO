@@ -8,7 +8,7 @@ export default function CreateClient() {
     const [telephone, setTelephone] = useState("");
     const [address, setAddress] = useState("");
     const [type, setType] = useState("");
-    const [balance, setBalance] = useState("");
+    const [balance, setBalance] = useState("0");
 
     function createClient(){
 
