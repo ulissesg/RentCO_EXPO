@@ -8,6 +8,10 @@ import Products from './src/components/Products';
 import Rents from './src/components/Rents';
 import CreateClient from './src/components/CreateClient';
 import UpdateClient from './src/components/UpdateClient';
+import CreateProduct from './src/components/CreateProduct';
+import UpdateProduct from './src/components/UpdateProduct';
+import CreateRent from './src/components/CreateRent'
+// import ClientInfo from './src/components/ClientInfo';
 
 
 export default function App() {
@@ -17,11 +21,16 @@ export default function App() {
   return (
       <NavigationContainer style={styles.container} >
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Clients"      component={ Clients }      />
-          <Stack.Screen name="Products"     component={ Products }     />
-          <Stack.Screen name="Rents"        component={ Rents }        />
-          <Stack.Screen name="CreateClient" component={ CreateClient } />
-          <Stack.Screen name="UpdateClient" component={ UpdateClient } />
+          <Stack.Screen name="Clients"       component={ Clients }       />
+          <Stack.Screen name="Products"      component={ Products }      />
+          <Stack.Screen name="Rents"         component={ Rents }         />
+          <Stack.Screen name="CreateClient"  component={ CreateClient }  />
+          <Stack.Screen name="UpdateClient"  component={ UpdateClient }  />
+          {/* <Stack.Screen name="Info"   component={ ClientInfo }   /> */}
+          <Stack.Screen name="CreateProduct" component={ CreateProduct } />
+          <Stack.Screen name="UpdateProduct" component={ UpdateProduct } />
+          <Stack.Screen name="CreateRent"    component={ CreateRent }    />
+
         </Stack.Navigator>
         <View style={styles.NavContainer}>
           <NavBar/>

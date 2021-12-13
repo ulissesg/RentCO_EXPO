@@ -21,7 +21,7 @@ export default function Clients () {
                                  [{ text: 'OK' }]);
                     getListClient()
                 })
-                .catch((err) => console.log('the following error ocurred while listing the clients: ' + err.message))
+                .catch((err) => console.log('the following error ocurred while deleting the clients: ' + err.message))
             }},
           ]);
         
@@ -56,8 +56,11 @@ export default function Clients () {
                 </Pressable>
 
                 {clients.map(client => 
-                    <Pressable onPress={() => navigation.navigate('Products')} key={client._id} style={styles.clients}>
-                        <Text style={styles.names}>{ client.name }</Text>
+                    <View key={client._id} style={styles.clients}>
+                        <Pressable onPress={() => navigation.navigate('Info')}  style={styles.names}>
+                            <Text style={styles.text}>{ client.name }</Text>
+                        </Pressable>
+                        
                         <View style={styles.clientFunction}>
                             <Pressable onPress={() => navigation.navigate('UpdateClient', {id: client._id})} style={styles.IconBehave} 
                                 android_ripple={{borderless:true, radius: 50}}>
@@ -68,7 +71,7 @@ export default function Clients () {
                                 <AntDesign name="delete" size={30} color="black" />
                             </Pressable>
                         </View>
-                    </Pressable>  
+                    </View>  
                 )}
             </ScrollView>
         </View>       
@@ -92,11 +95,15 @@ const styles=  {
         backgroundColor: 'white',
         borderRadius: 40
     },  
-    names: {
-        width: '50%',
-        textAlign: 'left',  
+
+    text: {
         fontSize: 30,
         color: 'black'
+    },
+
+    names: {
+        textAlign:'left',
+        width: '70%'
     },
     add: {
         position:'relative',
@@ -112,7 +119,7 @@ const styles=  {
     },
     clientFunction: {
         justifyContent: 'flex-end',
-        width: '50%',
+        width: '30%',
         flexDirection: 'row'
     }
     

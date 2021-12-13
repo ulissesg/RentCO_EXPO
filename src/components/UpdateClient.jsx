@@ -3,39 +3,33 @@ import React, { useEffect, useState } from "react";
 import { ScrollView, TextInput, Text, Pressable, Alert } from 'react-native';
 import api from '../../services/api';
 
-export default function CreateClient() {
+export default function UpdateClient() {
 
     const route = useRoute();
 
-    const [ client , setClient ] = useState();
     const [name, setName] = useState("");
     const [telephone, setTelephone] = useState("");
     const [address, setAddress] = useState("");
-    const [type, setType] = useState("");
-    const [balance, setBalance] = useState("");
-
-
-
+    const [type, setType] = useState();
+    const [balance, setBalance] = useState();
  
     useEffect(() => {
         api.get('/client/' + route.params.id)
         .then((response) => {
-            console.log(response.data.client)
-            setClient(response.data.client);
-            setName(response.data.client.name);
-            setTelephone(response.data.client.telephone);
-            setAddress(response.data.client.address);
-            setType(response.data.client.clientType);
-            setBalance(response.data.client.balance);
+            setName(response.data.client.name.toString());
+            setTelephone(response.data.client.telephone.toString());
+            setAddress(response.data.client.address.toString());
+            setType(response.data.client.clientType.toString());
+            setBalance(response.data.client.balance.toString());
         })
         .catch((err) => console.log('the following error ocurred while listing the clients: ' + err)) 
     }, [])
     
 
-    function createClient(){
+    function updateClient(){
 
         if(name !== "" && telephone !== "" && address !== "" && type !== ""){
-            api.post('/client/update/' + id,{
+            api.post('/client/update/' + route.params.id,{
                 "name": name,
                 "telephone": telephone,
                 "address": address,
@@ -94,8 +88,8 @@ export default function CreateClient() {
                 keyboardType="numeric"
             />
 
-            <Pressable style={styles.button} onPress={() => createClient()}>
-                <Text style={{color: 'white'}}>Adicionar</Text>
+            <Pressable style={styles.button} onPress={() => updateClient()}>
+                <Text style={{color: 'white'}}>Editar</Text>
             </Pressable>
         </ScrollView>
     )
