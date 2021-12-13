@@ -123,6 +123,7 @@ const styles=  {
         paddingHorizontal: 10
     },
     productFunction: {
+        alignItems: 'center',
         justifyContent: 'flex-end',
         width: '30%',
         flexDirection: 'row'

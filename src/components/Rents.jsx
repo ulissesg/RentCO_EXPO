@@ -10,6 +10,7 @@ export default function Rents () {
     const [name, setName] = useState();
     const [refreshing, setRefreshing] = useState(false);
     const [rents, setRents] = useState([]);
+    const [clients, setClients] = useState([]);
 
     function deleteRent(id) {
         Alert.alert('Excluir', 'Tem certeza que deseja excluir a Locação ?', [
@@ -27,15 +28,15 @@ export default function Rents () {
           ]);
     }
 
-    function getClientName(id){
-        if (id != null){
-            api.get('/client/' + id)
-            .then((response) => {
-                console.log(response.data.client.name)
-            })
-            .catch((err) => console.log('the following error ocurred while getting the name: ' + err))
-        }
-    }
+    useEffect(() => {
+        api.get('/client/list')
+        .then((response) => {
+            setClients(response.data.clients)    
+        })
+        .catch((err) => console.log('the following error ocurred while getting the clients: ' + err))
+
+    }, [])
+    
     
     function getListRent(){
         api.get('/rent/list')
@@ -79,7 +80,7 @@ export default function Rents () {
                                                     [{ text: 'OK' }])
                                                 }}
                                     style={styles.description}>
-                            <Text style={styles.text}> {rent.clientId} </Text>
+                            <Text style={styles.text}>{rent.clientId}</Text>
                         </Pressable>
                         
                         <View style={styles.rentFunction}>
@@ -134,6 +135,7 @@ const styles=  {
         paddingHorizontal: 10
     },
     rentFunction: {
+        alignItems: 'center',
         justifyContent: 'flex-end',
         width: '30%',
         flexDirection: 'row'

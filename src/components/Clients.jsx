@@ -130,6 +130,7 @@ const styles=  {
         paddingHorizontal: 10
     },
     clientFunction: {
+        alignItems: 'center',
         justifyContent: 'flex-end',
         width: '30%',
         flexDirection: 'row'
