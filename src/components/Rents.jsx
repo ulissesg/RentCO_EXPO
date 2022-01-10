@@ -8,9 +8,10 @@ export default function Rents () {
 
     const navigation = useNavigation();
     const [name, setName] = useState();
+    const [description, setDescription] = useState();
     const [refreshing, setRefreshing] = useState(false);
     const [rents, setRents] = useState([]);
-    const [clients, setClients] = useState([]);
+    const [rentsWN, setRentsWN] = useState([]);
 
     function deleteRent(id) {
         Alert.alert('Excluir', 'Tem certeza que deseja excluir a Locação ?', [
@@ -27,27 +28,35 @@ export default function Rents () {
             }},
           ]);
     }
-
-    useEffect(() => {
-        api.get('/client/list')
-        .then((response) => {
-            setClients(response.data.clients)    
-        })
-        .catch((err) => console.log('the following error ocurred while getting the clients: ' + err))
-
-    }, [])
     
     
     function getListRent(){
         api.get('/rent/list')
         .then((response) => {
-            setRents(response.data.rents)                
+
+            response.data.rents.map(rent => {
+                api.get('/client/' + rent.clientId).then((res) => { 
+                    setName(res.data.client.name)
+                    rent.clientId = res.data.client.name
+                })
+                rent.clientId = name
+
+                api.get('/product/' + rent.productId).then((res) => {
+                    setDescription(res.data.product.description)
+                    rent.productId = res.data.product.description
+                })
+                rent.productId = description
+            })
+            
+            setRentsWN(response.data.rents)   
+            // console.log(rents)
+            // setName(''); 
         })
         .catch((err) => console.log('the following error ocurred while listing the rents: ' + err))
     }
 
     useEffect(() => {
-        getListRent();  
+        getListRent(); 
     }, [])
       
     const onRefresh = React.useCallback(() => {
@@ -66,7 +75,7 @@ export default function Rents () {
                     <Text style={{fontSize: 30}}>     Adicionar uma locação</Text>
                 </Pressable>
 
-                {rents.map(rent => 
+                {rentsWN.map(rent => 
                     <View key={rent._id} style={styles.rents}>
                         <Pressable onPress={() => 
                                                 { Alert.alert('Locação', 
@@ -80,7 +89,7 @@ export default function Rents () {
                                                     [{ text: 'OK' }])
                                                 }}
                                     style={styles.description}>
-                            <Text style={styles.text}>{rent.clientId}</Text>
+                            <Text style={styles.text}>{rent.clientId + '\n' + rent.productId}</Text>
                         </Pressable>
                         
                         <View style={styles.rentFunction}>
